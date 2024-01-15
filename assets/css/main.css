@@ -1,0 +1,15 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+
+[isaac-container="container"] {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+[isaac-container="container"] > canvas {
+  border: 1px solid black;
+}
