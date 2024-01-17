@@ -1,6 +1,9 @@
-class Isaac extends Character{
+class Background extends NoAnimate {
   constructor(context, positionX, positionY, width, height) {
     super(context, positionX, positionY, width, height);
-    this.name = 'ISAAC';
+  }
+
+  draw() {
+    super.draw();
   }
 }

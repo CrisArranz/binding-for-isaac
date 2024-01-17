@@ -2,13 +2,25 @@ const CHARACTER = {
   velocity: 10,
   damage: 1,
   moves: {
-    right: 39,
-    bottom: 40,
-    left: 37,
-    top: 38,
-    shoot: 32
+    directions: {
+      right: 39,
+      bottom: 40,
+      left: 37,
+      top: 38,
+    },
+    shoot: {
+      special: 32,
+      rightShoot: 68,
+      bottomShoot: 83,
+      leftShoot: 65,
+      topShoot: 87,
+    }
   }
-}
+};
+
+const BACKGROUND = {
+  limits: 75
+};
 
 const ENEMY = {
   spider: {
@@ -26,4 +38,4 @@ const ENEMY = {
     damage: 3,
     life: 10
   },
-}
+};

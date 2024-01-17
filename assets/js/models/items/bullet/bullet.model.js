@@ -1,12 +1,24 @@
 class Bullet extends Animate {
-  constructor(context, positionX, positionY, width, height) {
+  constructor(context, positionX, positionY, width, height, direction) {
     super(context, positionX, positionY, width, height);
-    this.vx = 10;
+    this.v = 10;
+    this.direction = direction;
   }
 
 
   move() {
-    this.positionX += this.vx;
+    if (this.direction.rigth) {
+      this.positionX += this.v;
+    }
+    if (this.direction.left) {
+      this.positionX -= this.v;
+    }
+    if (this.direction.bottom) {
+      this.positionY += this.v;
+    }
+    if (this.direction.top) {
+      this.positionY -= this.v;
+    }
   }
 
   isVisible() {
