@@ -5,7 +5,9 @@ class Game {
     this.fps = 60;
 
 
-    this.player = new Isaac(this.context, 10, 10, 100, 100);
+    this.player = new Isaac(this.context, this.context.canvas.width / 2 - 50, this.context.canvas.height / 2 - 50, 100, 100);
+    this.enemy = new Fly(this.context, 0, this.context.canvas.height / 2 - 25, 25, 25, 5);
+    //this.background = new Background(this.context, 0, 0, this.context.canvas.width, this.context.canvas.height);
   }
 
   start() {
@@ -22,11 +24,14 @@ class Game {
   }
 
   draw() {
+    //this.background.draw();
     this.player.draw();
+    this.enemy.draw();
   }
 
   move() {
     this.player.move();
+    this.enemy.move(this.player);
   }
 
   onKeyDown(keyCode) {
