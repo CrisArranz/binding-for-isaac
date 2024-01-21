@@ -16,17 +16,17 @@ class Enemy extends Animate {
   }
 
   chasePlayer(player, level) {
-    if (this.positionX > player.positionX) {
-      this.vx = -3 - Math.floor(level / 5) / 3;
+    if (this.positionX > (player.positionX + player.width / 2 - this.width / 2)) {
+      this.vx = -3 - Math.floor(level / 5);
     }
-    if (this.positionX < player.positionX) {
-      this.vx = 3 + Math.floor(level / 5) / 3;
+    if (this.positionX < (player.positionX + player.width / 2 - this.width / 2)) {
+      this.vx = 3 + Math.floor(level / 5);
     }
-    if (this.positionY > player.positionY) {
-      this.vy = -3 - Math.floor(level / 5) / 3;
+    if (this.positionY > (player.positionY + player.height / 2 - this.height / 2)) {
+      this.vy = -3 - Math.floor(level / 5);
     }
-    if (this.positionY < player.positionY) {
-      this.vy = 3 + Math.floor(level / 5) / 3;
+    if (this.positionY < (player.positionY + player.height / 2 - this.height / 2)) {
+      this.vy = 3 + Math.floor(level / 5);
     }
   }
 
@@ -42,11 +42,11 @@ class Enemy extends Animate {
   move(player, level) {
     if (this.inBattleground) {      
       this.chasePlayer(player, level);
-      if (this.positionX - player.positionX < 3 && player.positionX - this.positionX < 3) {
+      if (this.positionX - (player.positionX + player.width / 2 - this.width / 2) < 3 && (player.positionX + player.width / 2 - this.width / 2) - this.positionX < 3) {
         this.vx = 0;
       }
   
-      if (this.positionY - player.positionY < 3 && player.positionY - this.positionY < 3) {
+      if (this.positionY - (player.positionY + player.height / 2 - this.height / 2) < 3 && (player.positionY + player.height / 2 - this.height / 2) - this.positionY < 3) {
         this.vy = 0;
       }
       if (this.positionX + this.width > this.context.canvas.width) {
