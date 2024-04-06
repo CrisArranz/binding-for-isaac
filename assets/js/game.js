@@ -6,13 +6,17 @@ class Game {
 
     this.level = 1;
 
+    this.score = 0;
+
     this.addEnemyTick = 0;
     this.numberEnemies = 0;
-    this.numberMaxEnemiesPerLevel = 5 * this.level;
+    this.numberMaxEnemiesPerLevel = 0;
 
     this.background = new Background(this.context, 0, 0, this.context.canvas.width, this.context.canvas.height);
     this.player = new Isaac(this.context, this.context.canvas.width / 2 - 50, this.context.canvas.height / 2 - 50, 100, 100);
     this.enemies = [];
+
+    this.nextLevel = true;
   }
 
   start() {
@@ -20,7 +24,15 @@ class Game {
       this.clear();
       this.draw();
       this.move();
+      this.coolDownDamagePlayer();
+      this.checkCollision();
       this.addEnemies();
+      if (this.nextLevel) {
+        this.nextLevel = false;
+        this.player.weapon = [];
+        this.numberEnemies = 0;
+        this.numberMaxEnemiesPerLevel = 5 * this.level;
+      }
     }, 1000 / this.fps)
   }
 
@@ -51,20 +63,74 @@ class Game {
     this.addEnemyTick++;
   }
 
+  checkCollision() {
+    this.enemies.forEach((enemy) => {
+      if (this.player.canReceivedDamage && this.player.isCollision(enemy)) {
+        this.player.lives = this.player.lives - enemy.damage;
+        this.player.canReceivedDamage = false;
+      }
+    });
+
+    if (this.player.lives <= 0) {
+      this.stop();
+    }
+    this.player.weapon.forEach(bullet => {
+      this.enemies.forEach((enemy, _i, enemies) => {
+        if (enemy.isCollision(bullet)) {
+          enemy.lives -= bullet.damage;
+          if (enemy.lives <= 0) {
+            enemy.isAlive = false;
+            this.score += enemy.point;
+          }
+          bullet.hasImpact();
+          if (enemies.every(enemy => enemy.lives <= 0)) {
+            this.level++;
+            this.nextLevel = true;
+          }
+        }
+      })
+    });
+  }
+
+  coolDownDamagePlayer() {
+    if (!this.player.canReceivedDamage) {
+      this.player.tickReceivedDamage++;
+      if (this.player.tickReceivedDamage > CHARACTER.tickReceivedDamage) {
+        this.player.tickReceivedDamage = 0;
+        this.player.canReceivedDamage = true;
+      }
+    }
+  }
+
+  clearEnemies() {
+    this.enemies = this.enemies.filter((enemy) => enemy.isAlive);
+  }
+
   clear() {
     this.player.clear();
+    this.clearEnemies();
     this.context.clearRect(0, 0, this.context.canvas.width, this.context.canvas.height);
   }
 
   draw() {
     this.background.draw();
-    this.player.draw();
+    if (!this.player.canReceivedDamage) {
+      if (this.player.tickReceivedDamage % 5 === 0) {
+        this.player.draw();
+      }
+    } else {
+      this.player.draw();
+    }
     this.enemies.forEach(enemy => enemy.draw());
   }
 
   move() {
     this.player.move();
     this.enemies.forEach(enemy => enemy.move(this.player, this.level));
+  }
+
+  stop() {
+    clearInterval(this.intervalId);
   }
 
   onKeyDown(keyCode) {

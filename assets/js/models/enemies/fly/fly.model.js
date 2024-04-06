@@ -10,7 +10,9 @@ class Fly extends Enemy {
       velocityX,
       velocityY,
       level,
-      ENEMY.fly.velocity
+      ENEMY.fly.velocity,
+      ENEMY.fly.damage,
+      ENEMY.fly.lives
     );
   }
 }

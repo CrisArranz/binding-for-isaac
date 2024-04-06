@@ -1,6 +1,7 @@
 const CHARACTER = {
   velocity: 10,
   damage: 1,
+  tickReceivedDamage: 50,
   moves: {
     directions: {
       right: 39,
@@ -18,6 +19,12 @@ const CHARACTER = {
   }
 };
 
+const BULLETS_CONFIG = {
+  width: 25,
+  height: 25,
+  velocity: 10
+}
+
 const CANVAS_DIMENSIONS = {
   width: 1080,
   height: 780
@@ -30,12 +37,12 @@ const ENEMY_CONFIG_START_POSITION = {
   velocityX: {
     up: 0,
     down: 0,
-    left: 5,
-    right: -5
+    left: 2,
+    right: -2
   },
   velocityY: {
-    up: 5,
-    down: -5,
+    up: 2,
+    down: -2,
     left: 0,
     right: 0
   },
@@ -61,7 +68,7 @@ const ENEMY = {
   spider: {
     velocity: 5,
     damage: 1,
-    life: 1,
+    lives: 1,
     dimension: {
       width: 50,
       height: 50,
@@ -71,7 +78,7 @@ const ENEMY = {
   fly: {
     velocity: 3,
     damage: 0.5,
-    life: 2,
+    lives: 1,
     dimension: {
       width: 45,
       height: 45,
@@ -80,8 +87,8 @@ const ENEMY = {
   },
   mushroom: {
     velocity: 1,
-    damage: 2,
-    life: 1,
+    damage: 2.5,
+    lives: 2,
     dimension: {
       width: 60,
       height: 70,
@@ -91,7 +98,7 @@ const ENEMY = {
   boss: {
     velocity: 1.5,
     damage: 3,
-    life: 10,
+    lives: 4,
     dimension: {
       width: 100,
       height: 100,

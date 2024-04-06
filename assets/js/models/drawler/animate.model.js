@@ -21,4 +21,11 @@ class Animate extends Picasso {
       }
     }
   }
+
+  isCollision(objectNoIdentify) {
+    return this.positionX + this.width >= objectNoIdentify.positionX && 
+      this.positionX <= objectNoIdentify.positionX + objectNoIdentify.width && 
+      this.positionY + this.height >= objectNoIdentify.positionY && 
+      this.positionY <= objectNoIdentify.positionY + objectNoIdentify.height;
+  }
 }

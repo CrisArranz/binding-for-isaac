@@ -31,16 +31,52 @@ class Character extends Animate {
         //this.weapon.push(new Bullet(this.context, this.positionX + (this.width / 2), this.positionY + (this.height / 2), 5, 5, { special: true }));
         break;
       case rightShoot:
-        this.weapon.push(new Bullet(this.context, this.positionX + (this.width / 2), this.positionY + (this.height / 2), 5, 5, { rigth: true }));
+        this.weapon.push(
+          new Bullet(
+            this.context,
+            this.positionX + (this.width / 2 - 10),
+            this.positionY + (this.height / 2 - 15),
+            BULLETS_CONFIG.width,
+            BULLETS_CONFIG.height,
+            { rigth: true }
+          )
+        );
         break;
       case leftShoot:
-        this.weapon.push(new Bullet(this.context, this.positionX + (this.width / 2), this.positionY + (this.height / 2), 5, 5, { left: true }));
+        this.weapon.push(
+          new Bullet(
+            this.context,
+            this.positionX + (this.width / 2 - 10),
+            this.positionY + (this.height / 2 - 15),
+            BULLETS_CONFIG.width,
+            BULLETS_CONFIG.height,
+            { left: true }
+          )
+        );
         break;
       case topShoot:
-        this.weapon.push(new Bullet(this.context, this.positionX + (this.width / 2), this.positionY + (this.height / 2), 5, 5, { top: true }));
+        this.weapon.push(
+          new Bullet(
+            this.context,
+            this.positionX + (this.width / 2 - 10),
+            this.positionY + (this.height / 2 - 25),
+            BULLETS_CONFIG.width,
+            BULLETS_CONFIG.height,
+            { top: true }
+          )
+        );
         break;
       case bottomShoot:
-        this.weapon.push(new Bullet(this.context, this.positionX + (this.width / 2), this.positionY + (this.height / 2), 5, 5, { bottom: true }));
+        this.weapon.push(
+          new Bullet(
+            this.context,
+            this.positionX + (this.width / 2 - 10),
+            this.positionY + (this.height / 2 - 25),
+            BULLETS_CONFIG.width,
+            BULLETS_CONFIG.height,
+            { bottom: true }
+          )
+        );
         break;
     }
   }
@@ -71,7 +107,7 @@ class Character extends Animate {
   }
 
   clearBullets() {
-    this.weapon = this.weapon.filter(bullet => bullet.isVisible())
+    this.weapon = this.weapon.filter(bullet => bullet.isVisible() && !bullet.impact)
   }
 
   checkLimits() {

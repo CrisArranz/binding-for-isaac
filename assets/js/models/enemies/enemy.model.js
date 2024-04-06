@@ -1,9 +1,12 @@
 class Enemy extends Animate {
-  constructor(context, positionX, positionY, width, height, sprite, numberHorizontalFrames, velocityX, velocityY, level, velocity) {
+  constructor(context, positionX, positionY, width, height, sprite, numberHorizontalFrames, velocityX, velocityY, level, velocity, damage, lives) {
     super(context, positionX, positionY, width, height, sprite, numberHorizontalFrames);
     this.vx = velocityX;
     this.vy = velocityY;
     this.velocity = velocity;
+
+    this.damage = damage;
+    this.lives = lives;
 
     this.point = 100 * level;
 
@@ -33,10 +36,6 @@ class Enemy extends Animate {
 
   onBattleground() {
     return this.positionX + this.width < this.context.canvas.width && this.positionX > 0 && this.positionY > 0 && this.positionY + this.height < this.context.canvas.height;
-  }
-
-  isCollision(bullet) {
-    return this.positionX + this.width >= bullet.positionX && this.positionX <= bullet.positionX + bullet.width && this.positionY + this.height >= bullet.positionY && this.positionY <= bullet.positionY + bullet.h;
   }
 
 

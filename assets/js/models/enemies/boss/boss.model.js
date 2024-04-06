@@ -11,7 +11,9 @@ class Boss extends Enemy {
       velocityX,
       velocityY,
       level,
-      ENEMY.boss.velocity
+      ENEMY.boss.velocity,
+      ENEMY.boss.damage,
+      ENEMY.boss.lives
     );
   }
 }

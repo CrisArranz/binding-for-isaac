@@ -10,7 +10,9 @@ class Spider extends Enemy {
       velocityX,
       velocityY,
       level,
-      ENEMY.spider.velocity
+      ENEMY.spider.velocity,
+      ENEMY.spider.damage,
+      ENEMY.spider.lives
     );
   }
 }

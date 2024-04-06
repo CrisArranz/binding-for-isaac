@@ -10,7 +10,9 @@ class Mushroom extends Enemy {
       velocityX,
       velocityY,
       level,
-      ENEMY.mushroom.velocity
+      ENEMY.mushroom.velocity,
+      ENEMY.mushroom.damage,
+      ENEMY.mushroom.lives
     );
   }
 }

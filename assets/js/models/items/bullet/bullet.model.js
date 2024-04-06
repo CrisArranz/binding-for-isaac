@@ -1,8 +1,10 @@
 class Bullet extends Animate {
-  constructor(context, positionX, positionY, width, height, direction, sprite) {
+  constructor(context, positionX, positionY, width, height, direction, sprite = './assets/image/items/bullet.png') {
     super(context, positionX, positionY, width, height, sprite);
-    this.v = 10;
+    this.v = BULLETS_CONFIG.velocity;
     this.direction = direction;
+    this.impact = false;
+    this.damage = 1;
   }
 
 
@@ -26,5 +28,9 @@ class Bullet extends Animate {
       && this.positionX + this.width > 0 
       && this.positionY < this.context.canvas.height 
       && this.positionY + this.height > 0
+  }
+
+  hasImpact() {
+    this.impact = true;
   }
 }
