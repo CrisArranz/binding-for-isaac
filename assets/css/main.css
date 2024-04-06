@@ -6,10 +6,39 @@ body {
 [isaac-container="container"] {
   height: 100vh;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
 [isaac-container="container"] > canvas {
   border: 1px solid black;
+}
+
+.container__buttons {
+  position: relative;
+  width: 1080px;
+  height: 720px;
+  background-image: url(../image/background/homepage.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.container__buttons div{
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  gap: 20px;
+  bottom: calc(720px / 4 - 50px);
+}
+
+.container__buttons div *{
+  transform: scale(1);
+  transition: .3s ease-in-out;
+}
+
+.container__buttons div *:hover{
+  transform: scale(1.2);
+  cursor: pointer;
 }
