@@ -1,16 +1,16 @@
-class Fly extends Enemy {
+class Mushroom extends Enemy {
   constructor(context, positionX, positionY, width, height, velocityX, velocityY, level) {
     super(context,
       positionX,
       positionY,
       width,
       height,
-      './assets/image/sprites/fly.png',
-      ENEMY.fly.dimension.horizontalFrames,
+      './assets/image/sprites/mushroom.png',
+      ENEMY.mushroom.dimension.horizontalFrames,
       velocityX,
       velocityY,
       level,
-      ENEMY.fly.velocity
+      ENEMY.mushroom.velocity
     );
   }
 }

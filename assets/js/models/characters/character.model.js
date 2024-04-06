@@ -1,6 +1,6 @@
 class Character extends Animate {
-  constructor(context, positionX, positionY, width, height) {
-    super(context, positionX, positionY, width, height);
+  constructor(context, positionX, positionY, width, height, sprite) {
+    super(context, positionX, positionY, width, height, sprite);
     this.vx = 0;
     this.vy = 0;
     this.weapon = [];

@@ -1,6 +1,6 @@
 class Bullet extends Animate {
-  constructor(context, positionX, positionY, width, height, direction) {
-    super(context, positionX, positionY, width, height);
+  constructor(context, positionX, positionY, width, height, direction, sprite) {
+    super(context, positionX, positionY, width, height, sprite);
     this.v = 10;
     this.direction = direction;
   }

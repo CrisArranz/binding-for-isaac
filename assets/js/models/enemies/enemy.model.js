@@ -1,8 +1,9 @@
 class Enemy extends Animate {
-  constructor(context, positionX, positionY, width, height, velocity, level) {
-    super(context, positionX, positionY, width, height);
-    this.vx = velocity;
-    this.vy = velocity;
+  constructor(context, positionX, positionY, width, height, sprite, numberHorizontalFrames, velocityX, velocityY, level, velocity) {
+    super(context, positionX, positionY, width, height, sprite, numberHorizontalFrames);
+    this.vx = velocityX;
+    this.vy = velocityY;
+    this.velocity = velocity;
 
     this.point = 100 * level;
 
@@ -17,16 +18,16 @@ class Enemy extends Animate {
 
   chasePlayer(player, level) {
     if (this.positionX > (player.positionX + player.width / 2 - this.width / 2)) {
-      this.vx = -3 - Math.floor(level / 5);
+      this.vx = -this.velocity - Math.floor(level / 5);
     }
     if (this.positionX < (player.positionX + player.width / 2 - this.width / 2)) {
-      this.vx = 3 + Math.floor(level / 5);
+      this.vx = this.velocity + Math.floor(level / 5);
     }
     if (this.positionY > (player.positionY + player.height / 2 - this.height / 2)) {
-      this.vy = -3 - Math.floor(level / 5);
+      this.vy = -this.velocity - Math.floor(level / 5);
     }
     if (this.positionY < (player.positionY + player.height / 2 - this.height / 2)) {
-      this.vy = 3 + Math.floor(level / 5);
+      this.vy = this.velocity + Math.floor(level / 5);
     }
   }
 
