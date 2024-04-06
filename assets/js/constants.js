@@ -32,6 +32,22 @@ const CANVAS_DIMENSIONS = {
 
 const SPRITES_TICKS = 10;
 const ENEMY_ADD_TICK = 20;
+const ITEMS_ADD_TICK = {
+  heart: 80,
+  boost: 180
+};
+
+const ENEMIES_START_VALUES = 0;
+
+const ITEMS_START_VALUES = {
+  heart: 0,
+  boost: 0
+}
+
+const ITEMS_MAX_PER_LEVEL = {
+  heart: 5,
+  boost: 3
+}
 
 const ENEMY_CONFIG_START_POSITION = {
   velocityX: {

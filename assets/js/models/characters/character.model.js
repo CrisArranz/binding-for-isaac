@@ -3,7 +3,11 @@ class Character extends Animate {
     super(context, positionX, positionY, width, height, sprite);
     this.vx = 0;
     this.vy = 0;
+    this.canSpecialAttack = false;
     this.weapon = [];
+
+    this.imageLives = new Image();
+    this.imageLives.src = './assets/image/items/heart.png';
   }
 
   draw(){
@@ -28,7 +32,49 @@ class Character extends Animate {
         this.vy = CHARACTER.velocity;
         break;
       case special:
-        //this.weapon.push(new Bullet(this.context, this.positionX + (this.width / 2), this.positionY + (this.height / 2), 5, 5, { special: true }));
+        if (this.canSpecialAttack) {
+          this.canSpecialAttack = false;
+          this.weapon.push(
+            new Bullet(
+              this.context,
+              this.positionX + (this.width / 2 - 10),
+              this.positionY + (this.height / 2 - 15),
+              BULLETS_CONFIG.width,
+              BULLETS_CONFIG.height,
+              { rigth: true }
+            )
+          );
+          this.weapon.push(
+            new Bullet(
+              this.context,
+              this.positionX + (this.width / 2 - 10),
+              this.positionY + (this.height / 2 - 15),
+              BULLETS_CONFIG.width,
+              BULLETS_CONFIG.height,
+              { left: true }
+            )
+          );
+          this.weapon.push(
+            new Bullet(
+              this.context,
+              this.positionX + (this.width / 2 - 10),
+              this.positionY + (this.height / 2 - 25),
+              BULLETS_CONFIG.width,
+              BULLETS_CONFIG.height,
+              { top: true }
+            )
+          );
+          this.weapon.push(
+            new Bullet(
+              this.context,
+              this.positionX + (this.width / 2 - 10),
+              this.positionY + (this.height / 2 - 25),
+              BULLETS_CONFIG.width,
+              BULLETS_CONFIG.height,
+              { bottom: true }
+            )
+          );
+        }
         break;
       case rightShoot:
         this.weapon.push(

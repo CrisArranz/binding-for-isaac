@@ -8,13 +8,23 @@ class Game {
 
     this.score = 0;
 
-    this.addEnemyTick = 0;
-    this.numberEnemies = 0;
-    this.numberMaxEnemiesPerLevel = 0;
+    this.addEnemyTick = ENEMIES_START_VALUES;
+    this.numberEnemies = ENEMIES_START_VALUES;
+    this.numberMaxEnemiesPerLevel = ENEMIES_START_VALUES;
+
+    this.addHeartTick = ITEMS_START_VALUES.heart;
+    this.numberHeart = ITEMS_START_VALUES.heart;
+    this.numberMaxHeartPerLevel = ITEMS_MAX_PER_LEVEL.heart;
+
+    this.addBoostTick = ITEMS_START_VALUES.boost;
+    this.numberBoost = ITEMS_START_VALUES.boost;
+    this.numberMaxBoostPerLevel = ITEMS_MAX_PER_LEVEL.boost;
 
     this.background = new Background(this.context, 0, 0, this.context.canvas.width, this.context.canvas.height);
     this.player = new Isaac(this.context, this.context.canvas.width / 2 - 50, this.context.canvas.height / 2 - 50, 100, 100);
     this.enemies = [];
+    this.hearts = [];
+    this.boosts = [];
 
     this.nextLevel = true;
   }
@@ -27,13 +37,47 @@ class Game {
       this.coolDownDamagePlayer();
       this.checkCollision();
       this.addEnemies();
+      this.addItems();
       if (this.nextLevel) {
         this.nextLevel = false;
         this.player.weapon = [];
-        this.numberEnemies = 0;
-        this.numberMaxEnemiesPerLevel = 5 * this.level;
+        this.numberEnemies = ENEMIES_START_VALUES;
+        this.numberHeart = ITEMS_START_VALUES.heart;
+        this.numberBoost = ITEMS_START_VALUES.boost;
+        this.numberMaxEnemiesPerLevel = 3 * this.level;
       }
     }, 1000 / this.fps)
+  }
+
+  addItems() {
+    this.addHearts();
+    this.addBoosts();
+  }
+
+  addHearts() {
+    if (this.addHeartTick > ITEMS_ADD_TICK.heart) {
+      this.addHeartTick = 0;
+      if (this.numberHeart < this.numberMaxHeartPerLevel) {
+        this.numberHeart++;
+        const randomPositionX = Math.floor(Math.random() * (CANVAS_DIMENSIONS.width - BACKGROUND.limits * 2) + BACKGROUND.limits);
+        const randomPositionY = Math.floor(Math.random() * (CANVAS_DIMENSIONS.height - BACKGROUND.limits * 2) + BACKGROUND.limits)
+        this.hearts.push(new Heart(this.context, randomPositionX, randomPositionY, 25, 25))
+      }
+    }
+    this.addHeartTick++;
+  }
+
+  addBoosts() {
+    if (this.addBoostTick > ITEMS_ADD_TICK.boost) {
+      this.addBoostTick = 0;
+      if (this.numberBoost < this.numberMaxBoostPerLevel) {
+        this.numberBoost++;
+        const randomPositionX = Math.floor(Math.random() * (CANVAS_DIMENSIONS.width - BACKGROUND.limits * 2) + BACKGROUND.limits);
+        const randomPositionY = Math.floor(Math.random() * (CANVAS_DIMENSIONS.height - BACKGROUND.limits * 2) + BACKGROUND.limits)
+        this.boosts.push(new Boost(this.context, randomPositionX, randomPositionY, 25, 25))
+      }
+    }
+    this.addBoostTick++;
   }
 
   addEnemies() {
@@ -64,16 +108,22 @@ class Game {
   }
 
   checkCollision() {
+    this.checkCollisionEnemies();
+    this.checkCollisionWeapon();
+    this.checkCollisionItems();
+    this.endGame();
+  }
+
+  checkCollisionEnemies() {
     this.enemies.forEach((enemy) => {
       if (this.player.canReceivedDamage && this.player.isCollision(enemy)) {
         this.player.lives = this.player.lives - enemy.damage;
         this.player.canReceivedDamage = false;
       }
     });
+  }
 
-    if (this.player.lives <= 0) {
-      this.stop();
-    }
+  checkCollisionWeapon() {
     this.player.weapon.forEach(bullet => {
       this.enemies.forEach((enemy, _i, enemies) => {
         if (enemy.isCollision(bullet)) {
@@ -92,6 +142,29 @@ class Game {
     });
   }
 
+  checkCollisionItems() {
+    this.checkCollisionHearts();
+    this.checkCollisionBoosts();
+  }
+
+  checkCollisionHearts() {
+    this.hearts.forEach(heart => {
+      if (!heart.impact && this.player.isCollision(heart)) {
+        this.player.lives += heart.heal;
+        heart.hasImpact();
+      }
+    });
+  }
+
+  checkCollisionBoosts() {
+    this.boosts.forEach(boost => {
+      if (!boost.impact && this.player.isCollision(boost) && !this.player.canSpecialAttack) {
+        this.player.canSpecialAttack = true;
+        boost.hasImpact();
+      }
+    });
+  }
+
   coolDownDamagePlayer() {
     if (!this.player.canReceivedDamage) {
       this.player.tickReceivedDamage++;
@@ -106,20 +179,39 @@ class Game {
     this.enemies = this.enemies.filter((enemy) => enemy.isAlive);
   }
 
+  clearItems() {
+    this.hearts = this.hearts.filter(heart => !heart.impact);
+    this.boosts = this.boosts.filter(boost => !boost.impact);
+  }
+
+  endGame() {
+    if (this.player.lives <= 0) {
+      this.clear();
+      this.draw();
+      this.stop();
+    }
+  }
+
   clear() {
     this.player.clear();
     this.clearEnemies();
+    this.clearItems();
     this.context.clearRect(0, 0, this.context.canvas.width, this.context.canvas.height);
   }
 
   draw() {
     this.background.draw();
+    this.hearts.forEach(heart => heart.draw());
+    this.boosts.forEach(boost => boost.draw());
     if (!this.player.canReceivedDamage) {
       if (this.player.tickReceivedDamage % 5 === 0) {
         this.player.draw();
       }
     } else {
       this.player.draw();
+    }
+    if (this.player.lives > 0) {
+      this.player.showLives();
     }
     this.enemies.forEach(enemy => enemy.draw());
   }
