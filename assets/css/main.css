@@ -33,7 +33,17 @@ body {
     background-repeat: no-repeat;
     background-size: cover;
 
-    & div {
+    & .container__buttons-volume {
+      position: relative;
+      & * {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        width: 2rem;
+      }
+    }
+
+    & .container__buttons-controls {
       position: absolute;
       display: flex;
       justify-content: center;

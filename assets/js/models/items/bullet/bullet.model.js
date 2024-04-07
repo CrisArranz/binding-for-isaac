@@ -5,6 +5,18 @@ class Bullet extends Animate {
     this.direction = direction;
     this.impact = false;
     this.damage = 1;
+
+    this.normalShootAudio = new Audio("./assets/audio/sprites/normal_shoot.wav");
+    this.normalShootAudio.volume = 0.1;
+
+    this.specialShootAudio = new Audio("./assets/audio/sprites/special_shoot.wav");
+    this.specialShootAudio.volume = 0.1;
+
+    if (this.direction.special) {
+      this.specialShootAudio.play();
+    } else {
+      this.normalShootAudio.play();
+    }
   }
 
 

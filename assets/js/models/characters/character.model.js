@@ -4,10 +4,18 @@ class Character extends Animate {
     this.vx = 0;
     this.vy = 0;
     this.canSpecialAttack = false;
+    this.imageSpecialAttack = new Image();
+    this.imageSpecialAttack.src="./assets/image/miscellaneous/special_attack.png";
     this.weapon = [];
 
     this.imageLives = new Image();
     this.imageLives.src = './assets/image/items/heart.png';
+
+    this.damageAudio = new Audio("./assets/audio/sprites/player_damage.wav");
+    this.damageAudio.volume = 0.1;
+
+    this.deadAudio = new Audio("./assets/audio/sprites/player_dead.wav");
+    this.deadAudio.volume = 0.1;
   }
 
   draw(){
@@ -41,7 +49,7 @@ class Character extends Animate {
               this.positionY + (this.height / 2 - 15),
               BULLETS_CONFIG.width,
               BULLETS_CONFIG.height,
-              { rigth: true }
+              { rigth: true, special: true }
             )
           );
           this.weapon.push(
@@ -51,7 +59,7 @@ class Character extends Animate {
               this.positionY + (this.height / 2 - 15),
               BULLETS_CONFIG.width,
               BULLETS_CONFIG.height,
-              { left: true }
+              { left: true, special: true }
             )
           );
           this.weapon.push(
@@ -61,7 +69,7 @@ class Character extends Animate {
               this.positionY + (this.height / 2 - 25),
               BULLETS_CONFIG.width,
               BULLETS_CONFIG.height,
-              { top: true }
+              { top: true, special: true }
             )
           );
           this.weapon.push(
@@ -71,7 +79,7 @@ class Character extends Animate {
               this.positionY + (this.height / 2 - 25),
               BULLETS_CONFIG.width,
               BULLETS_CONFIG.height,
-              { bottom: true }
+              { bottom: true, special: true }
             )
           );
         }

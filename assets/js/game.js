@@ -128,6 +128,7 @@ class Game {
       if (this.player.canReceivedDamage && this.player.isCollision(enemy)) {
         this.player.lives = this.player.lives - enemy.damage;
         this.player.canReceivedDamage = false;
+        this.player.damageAudio.play();
       }
     });
   }
@@ -140,6 +141,7 @@ class Game {
           if (enemy.lives <= 0) {
             enemy.isAlive = false;
             this.score += enemy.point;
+            enemy.deadAudio.play();
           }
           bullet.hasImpact();
           if (enemies.every(enemy => enemy.lives <= 0)) {
@@ -195,6 +197,8 @@ class Game {
 
   endGame(endGame) {
     if (this.player.lives <= 0) {
+      this.player.damageAudio.pause();
+      this.player.deadAudio.play();
       this.clear();
       this.draw();
       this.stop();
@@ -225,6 +229,7 @@ class Game {
       this.player.showLives();
     }
     this.showLevel();
+    this.showSpecialAttack();
     this.enemies.forEach(enemy => enemy.draw());
   }
 
@@ -254,6 +259,33 @@ class Game {
     this.context.font = '2rem binding-isaac';
     this.context.fillText(`Score: ${this.score.toString().padStart(6, '0')}`, this.context.canvas.width - 250, 25);
     this.context.restore();
+  }
+
+  showSpecialAttack() {
+    if (this.player.canSpecialAttack) {
+      this.context.drawImage(
+        this.player.imageSpecialAttack,
+        this.context.canvas.width - this.player.imageSpecialAttack.width - 70,
+        this.context.canvas.height - this.player.imageSpecialAttack.height - 70,
+        100,
+        100
+      );
+
+      this.context.save();
+      this.context.fillStyle = `rgba(255, 255, 255)`;
+      this.context.font = '2rem binding-isaac';
+      this.context.fillText(
+        `SPECIAL`,
+        this.context.canvas.width - this.player.imageSpecialAttack.width - 70,
+        this.context.canvas.height - this.player.imageSpecialAttack.height - 80
+      );
+      this.context.fillText(
+        `ATTACK`,
+        this.context.canvas.width - this.player.imageSpecialAttack.width - 65,
+        this.context.canvas.height - this.player.imageSpecialAttack.height + 60
+      );
+      this.context.restore();
+    }
   }
 
   showEnd(endGame) {

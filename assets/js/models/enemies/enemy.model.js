@@ -13,10 +13,19 @@ class Enemy extends Animate {
     this.isAlive = true;
 
     this.inBattleground = false;
+
+    this.moveAudio = new Audio("./assets/audio/sprites/enemies_move.wav");
+    this.moveAudio.volume = 0.1;
+
+    this.deadAudio = new Audio("./assets/audio/sprites/enemies_dead.wav");
+    this.deadAudio.volume = 0.1;
+
+    this.tickAudio = 0;
   }
 
   draw(){
     super.draw();
+    this.playAudio();
   }
 
   chasePlayer(player, level) {
@@ -36,6 +45,15 @@ class Enemy extends Animate {
 
   onBattleground() {
     return this.positionX + this.width < this.context.canvas.width && this.positionX > 0 && this.positionY > 0 && this.positionY + this.height < this.context.canvas.height;
+  }
+
+  playAudio() {
+    if (this.tickAudio > ENEMY_PLAY_AUDIO_MOVEMENT_TICK) {
+      this.tickAudio = 0;
+      this.moveAudio.play();
+    }
+
+    this.tickAudio++;
   }
 
 

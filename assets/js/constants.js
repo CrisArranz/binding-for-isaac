@@ -32,6 +32,7 @@ const CANVAS_DIMENSIONS = {
 const NEXT_LEVEL_TICK = 5;
 const SPRITES_TICKS = 10;
 const ENEMY_ADD_TICK = 20;
+const ENEMY_PLAY_AUDIO_MOVEMENT_TICK = 30;
 const ITEMS_ADD_TICK = {
   heart: 80,
   boost: 180
