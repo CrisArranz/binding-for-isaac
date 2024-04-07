@@ -29,7 +29,7 @@ const CANVAS_DIMENSIONS = {
   width: 1080,
   height: 780
 }
-
+const NEXT_LEVEL_TICK = 5;
 const SPRITES_TICKS = 10;
 const ENEMY_ADD_TICK = 20;
 const ITEMS_ADD_TICK = {

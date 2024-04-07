@@ -5,6 +5,10 @@ class Game {
     this.fps = 60;
 
     this.level = 1;
+    this.nextLevel = true;
+    this.nextLevelOpacity = 0;
+    this.nextLevelTransition = 1;
+    this.nextLevelHasTransition = true;
 
     this.score = 0;
 
@@ -26,16 +30,18 @@ class Game {
     this.hearts = [];
     this.boosts = [];
 
-    this.nextLevel = true;
+    this.endOpacity = 0;
+    this.endTransition = 1;
+    this.endHasTransition = true;
   }
 
-  start() {
+  start(endGame) {
     this.intervalId = setInterval(() => {
       this.clear();
       this.draw();
       this.move();
       this.coolDownDamagePlayer();
-      this.checkCollision();
+      this.checkCollision(endGame);
       this.addEnemies();
       this.addItems();
       if (this.nextLevel) {
@@ -45,6 +51,9 @@ class Game {
         this.numberHeart = ITEMS_START_VALUES.heart;
         this.numberBoost = ITEMS_START_VALUES.boost;
         this.numberMaxEnemiesPerLevel = 3 * this.level;
+        this.nextLevelTransition = 1;
+        this.nextLevelHasTransition = true;
+        this.nextLevelOpacity = 0;
       }
     }, 1000 / this.fps)
   }
@@ -107,11 +116,11 @@ class Game {
     this.addEnemyTick++;
   }
 
-  checkCollision() {
+  checkCollision(endGame) {
     this.checkCollisionEnemies();
     this.checkCollisionWeapon();
     this.checkCollisionItems();
-    this.endGame();
+    this.endGame(endGame);
   }
 
   checkCollisionEnemies() {
@@ -184,11 +193,12 @@ class Game {
     this.boosts = this.boosts.filter(boost => !boost.impact);
   }
 
-  endGame() {
+  endGame(endGame) {
     if (this.player.lives <= 0) {
       this.clear();
       this.draw();
       this.stop();
+      this.showEnd(endGame);
     }
   }
 
@@ -201,6 +211,7 @@ class Game {
 
   draw() {
     this.background.draw();
+    this.showScore();
     this.hearts.forEach(heart => heart.draw());
     this.boosts.forEach(boost => boost.draw());
     if (!this.player.canReceivedDamage) {
@@ -213,12 +224,56 @@ class Game {
     if (this.player.lives > 0) {
       this.player.showLives();
     }
+    this.showLevel();
     this.enemies.forEach(enemy => enemy.draw());
   }
 
   move() {
     this.player.move();
     this.enemies.forEach(enemy => enemy.move(this.player, this.level));
+  }
+
+  showLevel() {
+    if (this.nextLevelOpacity > 1 && this.nextLevelHasTransition) {
+      this.nextLevelTransition = -1;
+      this.nextLevelHasTransition = false;
+    }
+
+    this.nextLevelOpacity += 0.01 * this.nextLevelTransition;
+    
+    this.context.save();
+    this.context.fillStyle = `rgba(255, 255, 255, ${this.nextLevelOpacity})`;
+    this.context.font = '5rem binding-isaac';
+    this.context.fillText(`Level: ${this.level.toString().padStart(2, '0')}`, this.context.canvas.width / 2 - 165, this.context.canvas.height / 2 + 25);
+    this.context.restore();
+  }
+
+  showScore() {
+    this.context.save();
+    this.context.fillStyle = 'rgba(255, 255, 255, 0.95)';
+    this.context.font = '2rem binding-isaac';
+    this.context.fillText(`Score: ${this.score.toString().padStart(6, '0')}`, this.context.canvas.width - 250, 25);
+    this.context.restore();
+  }
+
+  showEnd(endGame) {
+    const intervalIdEnd = setInterval(() => {
+      if (this.endOpacity > 1 && this.endHasTransition) {
+        this.endTransition = -1;
+        this.endHasTransition = false;
+        clearInterval(intervalIdEnd)
+        this.clear();
+        endGame && endGame();
+      }
+  
+      this.endOpacity += 0.01 * this.endTransition;
+      
+      this.context.save();
+      this.context.fillStyle = `rgba(255, 255, 255, ${this.endOpacity})`;
+      this.context.font = '9rem binding-isaac';
+      this.context.fillText(`You're DEAD`, this.context.canvas.width / 2 - 420, 200);
+      this.context.restore();
+    }, 1000 / this.fps)
   }
 
   stop() {
